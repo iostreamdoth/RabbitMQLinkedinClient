@@ -1,0 +1,173 @@
+html, body {
+	background-color: #E7E9EC;
+}
+
+.btn-action {
+	color: #333;
+	background: -webkit-linear-gradient(#FFCC00, #FFD175);
+	/* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#FFCC00, #FFD175);
+	/* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#FFCC00, #FFD175);
+	/* For Firefox 3.6 to 15 */
+	background: linear-gradient(#FFCC00, #CCA300); /* Standard syntax */
+	border-color: #ccc;
+}
+
+.btn-action:hover, .btn-action:focus, .btn-action.focus, .btn-action:active,
+	.btn-action.active, .open>.dropdown-toggle.btn-action {
+	color: #333;
+	background: -webkit-linear-gradient(#FFCC00, #FFD175);
+	/* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#ffcc00, #FFD175);
+	/* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#FFCC00, #FFD175);
+	/* For Firefox 3.6 to 15 */
+	background: linear-gradient(#EABC04, #BD9700); /* Standard syntax */
+	border-color: #bd9700;
+}
+
+.btn-action:active, .btn-action.active, .open>.dropdown-toggle.btn-action
+	{
+	background-image: none;
+}
+
+.btn-action.disabled, .btn-action[disabled], fieldset[disabled] .btn-action,
+	.btn-action.disabled:hover, .btn-action[disabled]:hover, fieldset[disabled] .btn-action:hover,
+	.btn-action.disabled:focus, .btn-action[disabled]:focus, fieldset[disabled] .btn-action:focus,
+	.btn-action.disabled.focus, .btn-action[disabled].focus, fieldset[disabled] .btn-action.focus,
+	.btn-action.disabled:active, .btn-action[disabled]:active, fieldset[disabled] .btn-action:active,
+	.btn-action.disabled.active, .btn-action[disabled].active, fieldset[disabled] .btn-action.active
+	{
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-action .badge {
+	color: #fff;
+	background-color: #333;
+}
+
+.top-header {
+	background-color: #3f3f3f;
+	background-image: -webkit-linear-gradient(top, #696969 0%, #3f3f3f 100%);
+	background-image: -moz-linear-gradient(top, #696969 0%, #3f3f3f 100%);
+	background-image: -o-linear-gradient(top, #696969 0%, #3f3f3f 100%);
+	background-image: linear-gradient(top, #696969 0%, #3f3f3f 100%);
+	height: 30px;
+}
+
+.paddingbottom5px {
+	padding-botton: 5px;
+}
+
+.marginbottom5px {
+	margin-botton: 5px;
+}
+
+.margintop5px {
+	margin-top: 5px;
+}
+.margintop10px {
+	margin-top: 10px;
+}
+
+.margintopn5px {
+	margin-top: -5px;
+}
+
+.margintopn10px {
+	margin-top: -10px;
+}
+
+.backblack {
+	background-color: #000;
+}
+
+.heightlow {
+	height: 25px
+}
+
+.navlinks {
+	margin-top: -20px;
+}
+
+.margintop40px {
+	margin-top: 50px;
+}
+
+.linkinbar {
+	
+}
+
+div.linkinbar a {
+	margin-right: 40px;
+	color: #cccccc;
+	cursor: pointer;
+}
+
+div.linkinbar a: link {
+	color: #cccccc;
+	text-decoration: none;
+}
+
+div.linkinbar a:visited {
+	color: #cccccc;
+	text-decoration: none;
+}
+
+div.linkinbar a:hover {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+
+div.linkinbar a:active {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+.wallnotification
+{
+	background-color: #fff;
+	padding: 5px;
+}
+
+
+div.wallnotification a {
+	color: #3c9ff5;
+	cursor: pointer;
+	font-size: medium;
+}
+
+div.wallnotification a: link {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+
+div.wallnotification a:visited {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+
+div.wallnotification a:hover {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+
+div.wallnotification a:active {
+	color: #3c9ff5;
+	text-decoration: none;
+}
+.padding10px{
+	padding: 10px;
+}
+.rightborder{
+	border-right: solid 1px #999;
+}
+.visible{
+	visibility: visible;
+	display:block;
+}
+.notvisible{
+	visibility: hidden;
+	display:none;
+}

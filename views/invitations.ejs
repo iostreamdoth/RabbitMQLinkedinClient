@@ -1,0 +1,195 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="/include/js/angular.min.js"></script>
+<script src="/include/js/application.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap.min.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="/include/css/style.css" />
+<script src="/include/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-fixed-top navbar-inverse top-header">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand margintopn10px" href="#"><img
+						src="/include/images/logo_in_nav_44x36.png" alt="LinkedIn"
+						height="36" width="44" /></a>
+				</div>
+				<div id="navbar" id="signinapp" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-1"></div>
+						<div class="col-md-6">
+							<form id="form1" method="post" action="/profile/search">
+								<div class="navbar-form">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm"
+											style="width: 350px" placeholder="Search..." id="name"
+											name="name" value="">
+									</div>
+									<button type="submit" class="btn btn-primary">
+										<span class="glyphicon glyphicon-search"></span>
+									</button>
+
+
+
+									<!-- /input-group -->
+
+								</div>
+
+
+							</form>
+						</div>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">Link</a></li>
+						</ul>
+
+
+						<div class="col-md-3">
+							<div class="navbar-form">
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnInvitation" class="btn btn-primary"
+											type="button" onclick="sendtomessagebox()">
+											<span class="glyphicon glyphicon-envelope"></span>
+										</button>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnProfile" type="submit" class="btn btn-primary"
+											type="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											<span class="glyphicon glyphicon-user"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/user/edit">Edit Profile</a></li>
+											<li role="presentation" class="divider"></li>
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/signout">Signout</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+
+	<nav
+		class="navbar-static-top backblack heightlow navlinks margintop40px">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div id="navbar1" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-4">
+							<div class="linkinbar">
+								<a href="/wall">Home</a> <a href="/user/edit">Profile</a> <a
+									href="/connections">Connections</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+	<div class="container">
+		<% if(status=='success'){%> <% for(var i=0; i
+		<result.length; i++) {%>
+
+
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="row wallnotification margintop10px padding10px">
+					<div class="col-md-4 rightborder">
+						<% if(result[i].imagedetail == "") {%> <img alt="" height="225px"
+							width="180px"
+							src="http://localhost:3000/include/images/no-profile-img.gif">
+						<% } else{ %> <img alt="" height="225px" width="180px"
+							src="/include/images/<%= result[i].imagedetail %>"> <% } %>
+
+					</div>
+					<div class="col-md-8">
+						<a href="/user/profile/?uid=<%= result[i].userid %>"><h3><%=
+								result[i].firstname %> <%= result[i].lastname %></h3></a>
+						<hr />
+						Contact : <a href="mailto:<%=result[i].emailid %>"><%=result[i].emailid
+							%></a> <br /> Total Connections : <%=result[i].totalconnection %><br />
+						Message : <b><%=result[i].message %></b><br />
+						<hr />
+						<button class="btn btn-primary"
+							onclick="calldecision(<%=result[i].userid%>,<%=result[i].idinvitations%>,'<%=result[i].firstname%>','A' )">
+							Accept</button>
+						<button class="btn btn-danger"
+							onclick="calldecision(<%=result[i].userid%>,<%=result[i].idinvitations%>,'<%=result[i].firstname%>','R' )">
+							Reject</button>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<% }} else {%>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="row wallnotification margintop10px padding10px">
+					<div class="col-md-12">
+						<h3>No Invitations for you, Go ahead and search for some
+							people and add them so that they won't feel as bad as you did by
+							coming to this page</h3>
+
+
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<%}%> 
+	</div>
+	<script>
+		function calldecision(id,iid,name,decision)
+		{
+			$.post("/invitation/accept", {fromid:id,idinvitations:iid,decision:decision}).done(function(data) {
+
+				if (data.status != "success") {
+					window.location="/invitation/box"
+				}else
+					{
+					alert("Error occured when accepting invitation")
+					}
+			
+				
+			});
+		}
+	</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1123 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="/include/js/angular.min.js"></script>
+<script src="/include/js/application.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap.min.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="/include/css/style.css" />
+<script src="/include/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+	<nav class="navbar navbar-fixed-top navbar-inverse top-header">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand margintopn10px" href="#"><img
+						src="/include/images/logo_in_nav_44x36.png" alt="LinkedIn"
+						height="36" width="44" /></a>
+				</div>
+				<div id="navbar" id="signinapp" ng-app="signinapp"
+					ng-controller="signinController" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-1"></div>
+						<div class="col-md-6">
+							<form id="form1" method="post" action="/profile/search">
+								<div class="navbar-form">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm"
+											style="width: 350px" placeholder="Search..." id="name"
+											name="name" value="">
+									</div>
+									<button type="submit" class="btn btn-primary">
+										<span class="glyphicon glyphicon-search"></span>
+									</button>
+
+
+
+									<!-- /input-group -->
+
+								</div>
+
+
+							</form>
+						</div>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">Link</a></li>
+						</ul>
+
+
+						<div class="col-md-3">
+							<div class="navbar-form">
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnInvitation" class="btn btn-primary"
+											type="button" onclick="sendtomessagebox()">
+											<span class="glyphicon glyphicon-envelope"></span>
+										</button>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnProfile" type="submit" class="btn btn-primary"
+											type="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											<span class="glyphicon glyphicon-user"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/user/edit">Edit Profile</a></li>
+											<li role="presentation" class="divider"></li>
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/signout">Signout</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+
+	<nav
+		class="navbar-static-top backblack heightlow navlinks margintop40px">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div id="navbar1" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-4">
+							<div class="linkinbar">
+								<a href="/wall">Home</a> <a href="/user/edit">Profile</a> <a
+									href="/connections">Connections</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="row wallnotification margintop10px padding10px">
+					<div class="col-md-4 rightborder">
+						<% if(profile.imagedetail == "") {%> <img alt="" height="225px"
+							width="180px"
+							src="http://localhost:3000/include/images/no-profile-img.gif">
+						<% } else{ %> <img alt="" height="225px" width="180px"
+							src="/include/images/<%= profile.imagedetail %>"> <% } %>
+
+					</div>
+					<div class="col-md-8">
+						<h3><%= profile.firstname %> <%= profile.lastname %></h3>
+						<hr />
+						Contact : <a href="mailto:<%=profile.emailid %>"><%=profile.emailid
+							%></a> <br /> Total Connections : <%=profile.totalconnection %><br />
+						Last Loggedin : <%=profile.lastloggedin %><br />
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="row ">
+					<div class="wallnotification margintop10px padding10px">
+						<h2>
+							Summary
+							<button class="btn btn-default" onclick="oneditsummaryclick()">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button>
+						</h2>
+						<hr>
+						<div id="profilesummary" class="visible"><%= profile.summary
+							%></div>
+						<div ng-app="editsummary" ng-controller="editsummarycontroller"
+							id="editsummary" class="notvisible">
+							<textarea rows="5" class="form-control"
+								ng-model="editsummarytext" name="editsummarytext"
+								id="editsummarytext"></textarea>
+							<hr />
+							<button class="btn btn-primary" type="submit"
+								ng-click="submiteditsummary()">Submit</button>
+							<button class="btn btn-default" onclick="oncancelsummaryclick()">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+
+		<div class="row">
+
+
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="row">
+
+					<div class="wallnotification margintop10px padding10px">
+						<h2>Experience</h2>
+						<hr />
+						<% for(var i=0; i
+						<work.length; i++) {%>
+
+
+						<div>
+							<h4>
+								<%= work[i].desc %>
+								<button class="btn btn-default"
+									onclick="calleditexpmodal('<%= work[i].profileid %>')">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button>
+								<button class="btn btn-default"
+									onclick="deleteprofile('<%= work[i].profileid %>')">
+									<span class="glyphicon glyphicon-minus"></span>
+								</button>
+							</h4>
+						</div>
+						<div>
+							<h5><%= work[i].as %> ,<%= work[i].organisation %></h5>
+						</div>
+						<div>
+							<h5><%= work[i].location %></h5>
+						</div>
+						<div><%= work[i].from %> - <%= work[i].to %></div>
+						<div><%= work[i].summary %></div>
+						<hr />
+						<% } %>
+
+						<div>
+							<button class="btn btn-primary" onclick="calladdexpmodal()">Add
+								Experience</button>
+						</div>
+					</div>
+
+
+					<div class="wallnotification margintop10px padding10px">
+						<h2>Education</h2>
+						<hr />
+						<% for(var i=0; i
+						<education.length; i++) {%>
+
+
+						<div>
+							<h4>
+								<%= education[i].desc %>
+								<button class="btn btn-default"
+									onclick="calleditedumodal('<%= education[i].profileid %>')">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button>
+								<button class="btn btn-default"
+									onclick="deleteprofile('<%= education[i].profileid %>')">
+									<span class="glyphicon glyphicon-minus"></span>
+								</button>
+							</h4>
+						</div>
+						<div>
+							<h5><%= education[i].as %> ,<%= education[i].organisation %></h5>
+						</div>
+						<div>
+							<h5><%= education[i].location %></h5>
+						</div>
+						<div><%= education[i].from %> - <%= education[i].to %></div>
+						<div><%= education[i].summary %></div>
+						<hr />
+						<% } %>
+
+						<div>
+							<button class="btn btn-primary" onclick="calladdedumodal()">Add
+								Education</button>
+						</div>
+					</div>
+
+					<div class="wallnotification margintop10px padding10px">
+						<h2>Skills</h2>
+						<hr />
+						<% for(var i=0; i
+						<skill.length; i++) {%>
+						<div>
+							<%= skill[i].skillname %>
+							<button class="btn btn-default"
+								onclick="deleteskill('<%= skill[i].skillid %>')">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button>
+						</div>
+						<hr />
+						<% } %>
+						<div>
+							<button class="btn btn-primary" onclick="calladdskillmodal()">Add
+								Skill</button>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modaleditexp" tabindex="-1" role="dialog"
+		aria-labelledby="modaleditexpLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div ng-app="editexp" id="editexp" ng-controller="editexpcontroller"
+				class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modaleditexpLabel">Edit Experience</h4>
+
+				</div>
+				<div class="modal-body">
+					<div id="beforeloadexp" class="visible">
+						<img src="/include/images/loading.gif">
+					</div>
+					<div id="afterloadexp" class="notvisible form-horizontal">
+						<div>
+							<input type="hidden" ng-model="profileid" id="profileid"
+								name="profileid" />
+							<div class="row">
+								<div class="col-md-3">
+									<b>Description</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="description"
+										name="description" ng-model="description" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Organisation</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="organisation"
+										name="organisation" ng-model="organisation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Worked as a</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="asa" name="asa"
+										ng-model="asa" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Location</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="location"
+										name="location" ng-model="location" />
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>From Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="fromdate"
+										name="fromdate" ng-model="fromdate" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>To Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="todate"
+										name="todate" ng-model="todate" />
+								</div>
+							</div>
+							<div class="row ">
+								<div class="col-md-3">
+									<b>Summary</b>
+								</div>
+								<div class="col-md-9">
+									<textarea rows="5" class="form-control" type="text"
+										id="summary" name="summary" ng-model="summary"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" ng-click="submitededitexp()"
+						class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="modaladdskill" tabindex="-1" role="dialog"
+		aria-labelledby="modaladdskillLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div ng-app="addskill" id="addskill"
+				ng-controller="addskillcontroller" class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modaladdskillLabel">Edit
+						skillerience</h4>
+
+				</div>
+				<div class="modal-body">
+					<div id="beforeloadaddskill" class="visible">
+						<img src="/include/images/loading.gif">
+					</div>
+					<div id="afterloadaddskill" class="notvisible form-horizontal">
+						<div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Skill Name</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text"
+										id="addskilldescription" name="addskilldescription"
+										ng-model="addskilldescription" />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" ng-click="submitaddskill()"
+						class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="modaladdexp" tabindex="-1" role="dialog"
+		aria-labelledby="modaladdexpLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div ng-app="addexp" id="addexp" ng-controller="addexpcontroller"
+				class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modaladdexpLabel">Edit Experience</h4>
+
+				</div>
+				<div class="modal-body">
+					<div id="beforeloadaddexp" class="visible">
+						<img src="/include/images/loading.gif">
+					</div>
+					<div id="afterloadaddexp" class="notvisible form-horizontal">
+						<div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Description</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexpdescription"
+										name="addexpdescription" ng-model="addexpdescription" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Organisation</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexporganisation"
+										name="addexporganisation" ng-model="addexporganisation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Worked as a</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexpasa"
+										name="addexpasa" ng-model="addexpasa" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Location</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexplocation"
+										name="addexplocation" ng-model="addexplocation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>From Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexpfromdate"
+										name="addexpfromdate" ng-model="addexpfromdate" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>To Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addexptodate"
+										name="addexptodate" ng-model="addexptodate" />
+								</div>
+							</div>
+
+							<div class="row ">
+								<div class="col-md-3">
+									<b>Summary</b>
+								</div>
+								<div class="col-md-9">
+									<textarea rows="5" class="form-control" type="text"
+										id="addexpsummary" name="addexpsummary"
+										ng-model="addexpsummary"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" ng-click="submitaddexp()"
+						class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="modaleditedu" tabindex="-1" role="dialog"
+		aria-labelledby="modalediteduLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div ng-app="editedu" id="editedu" ng-controller="editeducontroller"
+				class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modalediteduLabel">Edit eduerience</h4>
+
+				</div>
+				<div class="modal-body">
+					<div id="beforeloadedu" class="visible">
+						<img src="/include/images/loading.gif">
+					</div>
+					<div id="afterloadedu" class="notvisible form-horizontal">
+						<div>
+							<input type="hidden" ng-model="eduprofileid" id="eduprofileid"
+								name="eduprofileid" />
+							<div class="row">
+								<div class="col-md-3">
+									<b>Description</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="edudescription"
+										name="edudescription" ng-model="edudescription" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Organisation</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="eduorganisation"
+										name="eduorganisation" ng-model="eduorganisation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Worked as a</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="eduasa"
+										name="eduasa" ng-model="eduasa" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Location</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="edulocation"
+										name="edulocation" ng-model="edulocation" />
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>From Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="edufromdate"
+										name="edufromdate" ng-model="edufromdate" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>To Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="edutodate"
+										name="edutodate" ng-model="edutodate" />
+								</div>
+							</div>
+							<div class="row ">
+								<div class="col-md-3">
+									<b>Summary</b>
+								</div>
+								<div class="col-md-9">
+									<textarea rows="5" class="form-control" type="text"
+										id="edusummary" name="edusummary" ng-model="edusummary"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" ng-click="submitededitedu()"
+						class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modaladdedu" tabindex="-1" role="dialog"
+		aria-labelledby="modaladdeduLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div ng-app="addedu" id="addedu" ng-controller="addeducontroller"
+				class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modaladdeduLabel">Edit Education</h4>
+
+				</div>
+				<div class="modal-body">
+					<div id="beforeloadaddedu" class="visible">
+						<img src="/include/images/loading.gif">
+					</div>
+					<div id="afterloadaddedu" class="notvisible form-horizontal">
+						<div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Description</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addedudescription"
+										name="addedudescription" ng-model="addedudescription" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Scool/College</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addeduorganisation"
+										name="addeduorganisation" ng-model="addeduorganisation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>Major/Specialization</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addeduasa"
+										name="addeduasa" ng-model="addeduasa" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>Location</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addedulocation"
+										name="addedulocation" ng-model="addedulocation" />
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3">
+									<b>From Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addedufromdate"
+										name="addedufromdate" ng-model="addedufromdate" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<b>To Date</b>
+								</div>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="addedutodate"
+										name="addedutodate" ng-model="addedutodate" />
+								</div>
+							</div>
+
+							<div class="row ">
+								<div class="col-md-3">
+									<b>Summary</b>
+								</div>
+								<div class="col-md-9">
+									<textarea rows="5" class="form-control" type="text"
+										id="addedusummary" name="addedusummary"
+										ng-model="addedusummary"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" ng-click="submitaddedu()"
+						class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		function deleteprofile(id) {
+
+			$.post("/profile/delexp", {
+				profileid : id
+			}).done(function(data) {
+				window.location = '/user/edit';
+			});
+
+		}
+		function deleteskill(id) {
+			$.post("/skill/delskill", {
+				skillid : id
+			}).done(function(data) {
+				window.location = '/user/edit';
+			});
+
+		}
+	</script>
+	<script>
+		function calladdexpmodal() {
+
+			$('#modaladdexp').on('hide.bs.modal', function(e) {
+				window.location = '/user/edit';
+			})
+			$("#beforeloadaddexp").attr('class', 'notvisible');
+			$("#afterloadaddexp").attr('class', 'visible');
+			$('#modaladdexp').modal();
+		}
+
+		function calleditexpmodal(id) {
+
+			$('#modaleditexp').on('hide.bs.modal', function(e) {
+				window.location = '/user/edit';
+			})
+			$('#modaleditexp').modal();
+
+			var editexpcontroller = angular.module("editexp", []);
+			editexpcontroller
+					.controller(
+							"editexpcontroller",
+							function($scope, $http, $location) {
+								$scope.profileid = id;
+								$http({
+									method : 'POST',
+									url : '/profile/editexp',
+									data : {
+										profileid : id,
+										organisation : "",
+										type : "WO",
+										desc : "",
+										as : "",
+										from : "",
+										to : "",
+										location : "",
+										summary : ""
+									}
+
+								})
+										.success(
+												function(response) {
+													if (response.status == "success") {
+
+																$scope.profileid = response.data.profileid,
+																$scope.organisation = response.data.organisation,
+																$scope.description = response.data.desc,
+																$scope.asa = response.data.as,
+																$scope.fromdate = response.data.from,
+																$scope.todate = response.data.to,
+																$scope.location = response.data.location,
+																$scope.summary = response.data.summary
+														$("#beforeloadexp")
+																.attr('class',
+																		'notvisible');
+														$("#afterloadexp")
+																.attr('class',
+																		'visible');
+													} else
+														window.location = '/failLogin';
+												}).error(function(error) {
+
+											alert("error");
+										});
+
+								$scope.submitededitexp = function() {
+
+									//alert("hey man profile id is "+$scope.profileid);
+									$http({
+										method : 'POST',
+										url : '/profile/editexpid',
+										data : {
+											profileid : $scope.profileid,
+											organisation : $scope.organisation,
+											type : "WO",
+											desc : $scope.description,
+											as : $scope.asa,
+											from : $scope.fromdate,
+											to : $scope.todate,
+											location : $scope.location,
+											summary : $scope.summary
+
+										}
+
+									}).success(function(response) {
+										if (response.status == "success")
+											window.location = '/user/edit';
+										else
+											window.location = '/user/edit';
+									}).error(function(error) {
+										alert("error");
+									});
+								};
+							});
+
+			angular
+					.bootstrap(document.getElementById("editexp"),
+							[ 'editexp' ]);
+
+		}
+	</script>
+	<script>
+		function calladdedumodal() {
+
+			$('#modaladdedu').on('hide.bs.modal', function(e) {
+				window.location = '/user/edit';
+			})
+			$("#beforeloadaddedu").attr('class', 'notvisible');
+			$("#afterloadaddedu").attr('class', 'visible');
+			$('#modaladdedu').modal();
+		}
+		function calladdskillmodal() {
+
+			$('#modaladdskill').on('hide.bs.modal', function(e) {
+				window.location = '/user/edit';
+			})
+			$("#beforeloadaddskill").attr('class', 'notvisible');
+			$("#afterloadaddskill").attr('class', 'visible');
+			$('#modaladdskill').modal();
+		}
+
+		function calleditedumodal(id) {
+
+			$('#modaleditedu').on('hide.bs.modal', function(e) {
+				window.location = '/user/edit';
+			})
+			$('#modaleditedu').modal();
+			var editeducontroller = angular.module("editedu", []);
+			editeducontroller
+					.controller(
+							"editeducontroller",
+							function($scope, $http, $location) {
+								$scope.eduprofileid = id;
+								$http({
+									method : 'POST',
+									url : '/profile/editexp',
+									data : {
+										profileid : id,
+										organisation : "",
+										type : "ED",
+										desc : "",
+										as : "",
+										from : "",
+										to : "",
+										location : "",
+										summary : ""
+									}
+
+								})
+										.success(
+												function(response) {
+													if (response.status == "success") {
+
+																$scope.eduprofileid = response.data.profileid,
+																$scope.eduorganisation = response.data.organisation,
+																$scope.edudescription = response.data.desc,
+																$scope.eduasa = response.data.as,
+																$scope.edufromdate = response.data.from,
+																$scope.edutodate = response.data.to,
+																$scope.edulocation = response.data.location,
+																$scope.edusummary = response.data.summary
+														$("#beforeloadedu")
+																.attr('class',
+																		'notvisible');
+														$("#afterloadedu")
+																.attr('class',
+																		'visible');
+													} else
+														window.location = '/failLogin';
+												}).error(function(error) {
+
+											alert("error");
+										});
+
+								$scope.submitededitedu = function() {
+
+									//alert("hey man profile id is "+$scope.profileid);
+									$http(
+											{
+												method : 'POST',
+												url : '/profile/editexpid',
+												data : {
+													profileid : $scope.eduprofileid,
+													organisation : $scope.eduorganisation,
+													type : "ED",
+													desc : $scope.edudescription,
+													as : $scope.eduasa,
+													from : $scope.edufromdate,
+													to : $scope.edutodate,
+													location : $scope.edulocation,
+													summary : $scope.edusummary
+
+												}
+
+											}).success(function(response) {
+										if (response.status == "success")
+											window.location = '/user/edit';
+										else
+											window.location = '/user/edit';
+									}).error(function(error) {
+										alert("error");
+									});
+								};
+							});
+
+			angular
+					.bootstrap(document.getElementById("editedu"),
+							[ 'editedu' ]);
+
+		}
+	</script>
+	<script>
+		var signinController = angular.module("signinapp", []);
+		signinController.controller("signinController", function($scope, $http,
+				$location) {
+
+			$scope.signIn = function() {
+				//alert($scope.loginemail);
+				$http({
+					method : 'POST',
+					url : '/signin',
+					data : {
+						"username" : $scope.loginemail,
+						"password" : $scope.loginpassword
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/wall';
+					else
+						window.location = '/failLogin';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+
+		var editsummarycontroller = angular.module("editsummary", []);
+		editsummarycontroller.controller("editsummarycontroller", function(
+				$scope, $http, $location) {
+			$scope.editsummarytext = "<%= profile.summary %>";
+
+			$scope.submiteditsummary = function() {
+				$http({
+					method : 'POST',
+					url : '/profile/editsummary',
+					data : {
+
+						"summary" : $scope.editsummarytext
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/user/edit';
+					else
+						window.location = '/user/edit';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+
+		var addexpcontroller = angular.module("addexp", []);
+		addexpcontroller.controller("addexpcontroller", function($scope, $http,
+				$location) {
+
+			$scope.submitaddexp = function() {
+				$http({
+					method : 'POST',
+					url : '/profile/addexp',
+					data : {
+
+						organisation : $scope.addexporganisation,
+						type : "WO",
+						desc : $scope.addexpdescription,
+						as : $scope.addexpasa,
+						from : $scope.addexpfromdate,
+						to : $scope.addexptodate,
+						location : $scope.addexplocation,
+						summary : $scope.addexpsummary
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/user/edit';
+					else
+						window.location = '/user/edit';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+
+		var addeducontroller = angular.module("addedu", []);
+		addeducontroller.controller("addeducontroller", function($scope, $http,
+				$location) {
+
+			$scope.submitaddedu = function() {
+				$http({
+					method : 'POST',
+					url : '/profile/addexp',
+					data : {
+
+						organisation : $scope.addeduorganisation,
+						type : "ED",
+						desc : $scope.addedudescription,
+						as : $scope.addeduasa,
+						from : $scope.addedufromdate,
+						to : $scope.addedutodate,
+						location : $scope.addedulocation,
+						summary : $scope.addedusummary
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/user/edit';
+					else
+						window.location = '/user/edit';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+		
+		
+		
+		var addskillcontroller = angular.module("addskill", []);
+		addskillcontroller.controller("addskillcontroller", function($scope, $http,
+				$location) {
+			
+			$scope.submitaddskill = function() {
+				$http({
+					method : 'POST',
+					url : '/skill/addskill',
+					data : {
+						skillname : $scope.addskilldescription
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/user/edit';
+					else
+						window.location = '/user/edit';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+
+		angular.bootstrap(document.getElementById("addskill"), [ 'addskill' ]);
+		angular.bootstrap(document.getElementById("addexp"), [ 'addexp' ]);
+		angular.bootstrap(document.getElementById("addedu"), [ 'addedu' ]);
+		angular.bootstrap(document.getElementById("editsummary"),
+				[ 'editsummary' ]);
+	</script>
+	<script>
+		invitationstatus();
+		function oneditsummaryclick() {
+			$("#profilesummary").attr('class', 'notvisible');
+			$("#editsummary").attr('class', 'visible');
+		}
+		function oncancelsummaryclick() {
+			$("#profilesummary").attr('class', 'visible');
+			$("#editsummary").attr('class', 'notvisible');
+		}
+	</script>
+</body>
+</html>

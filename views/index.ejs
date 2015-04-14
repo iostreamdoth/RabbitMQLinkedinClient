@@ -1,0 +1,186 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="/include/js/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/include/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap-theme.css" />
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img
+					src="/include/images/logo_132x32_2.png" alt="LinkedIn" height="32"
+					width="132" /></a>
+			</div>
+			<div id="navbar" id="signinapp" ng-app="signinapp"
+				ng-controller="signinController" class="navbar-collapse collapse">
+				<form id="form1">
+					<div class="navbar-form navbar-right">
+						<div class="form-group">
+							<input type="email" ng-model="loginemail" name="loginemail"
+								id="loginemail" placeholder="Email" class="form-control">
+						</div>
+						<div class="form-group">
+							<input type="password" ng-model="loginpassword"
+								name="loginpassword" id="loginpassword" placeholder="Password"
+								class="form-control">
+						</div>
+						<button type="submit" ng-click="signIn()" class="btn btn-default">Sign
+							in</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<h2>
+					<b>Join the world's largest professional network.</b>
+				</h2>
+			</div>
+			<div class="col-md-2"></div>
+
+		</div>
+		<div class="row">
+			<br /> <br />
+		</div>
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-6">
+				<br /> <br /> <img
+					src="/include/images/ghp_international_1_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot"> <img
+					src="/include/images/ghp_international_2_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot"> <img
+					src="/include/images/ghp_international_3_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot"> <img
+					src="/include/images/ghp_international_4_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot"> <img
+					src="/include/images/ghp_international_5_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot"> <img
+					src="/include/images/ghp_international_6_150x150_v1.png"
+					width="150" height="150" alt="Male Headshot">
+			</div>
+			<div id="signupapp" ng-app="signupapp"
+				ng-controller="signupController" class="col-md-4">
+				<h3>
+					<b>Get started – it’s free.</b>
+				</h3>
+				<h4>Registration takes less than 2 minutes.</h4>
+				<br />
+				<form id="form2">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" ng-model="signupfirstname"
+									id="signupfirstname" name="signupfirstname"
+									placeholder="First Name" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" ng-model="signuplastname" id="signuplastname"
+									name="signuplastname" placeholder="Last Name"
+									class="form-control">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="text" ng-model="signupemail" id="signupemail"
+							name="signupemail" placeholder="Email" class="form-control">
+					</div>
+					<div class="form-group">
+						<input type="password" ng-model="signuppassword"
+							id="signuppassword" name="signuppassword" placeholder="Password"
+							class="form-control">
+					</div>
+					<button type="submit" ng-click="signUp()"
+						class="btn btn-action btn-lg btn-block">Join Now</button>
+				</form>
+			</div>
+			<div class="col-md-1"></div>
+
+		</div>
+	</div>
+	<script>
+		var signinController = angular.module("signinapp", []);
+		signinController.controller("signinController", function($scope, $http,
+				$location) {
+
+			$scope.signIn = function() {
+				//alert($scope.loginemail);
+				$http({
+					method : 'POST',
+					url : '/signin',
+					data : {
+						"username" : $scope.loginemail,
+						"password" : $scope.loginpassword
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/wall';
+					else
+						window.location = '/failLogin';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+		var signupController = angular.module("signupapp", []);
+		signupController.config([ '$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.useXDomain = true;
+			$httpProvider.defaults.withCredentials = true;
+			delete $httpProvider.defaults.headers.common['X-Requested-With'];
+		} ]);
+		signupController.controller("signupController", function($scope, $http,
+				$location) {
+
+			$scope.signUp = function() {
+
+				$http({
+					method : 'POST',
+					url : '/signup',
+					data : {
+						"firstname" : $scope.signupfirstname,
+						"lastname" : $scope.signuplastname,
+						"username" : $scope.signupemail,
+						"password" : $scope.signuppassword
+					}
+
+				}).success(function(response) {
+
+					alert(JSON.stringify(response));
+
+					if (response.login == "success")
+						window.location = '/successLogin';
+					else
+						window.location = '/failLogin';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+		angular
+				.bootstrap(document.getElementById("signupapp"),
+						[ 'signupapp' ]);
+	</script>
+</body>
+</html>

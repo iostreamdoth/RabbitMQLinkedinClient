@@ -1,0 +1,250 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="/include/js/angular.min.js"></script>
+<script src="/include/js/application.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap.min.css" />
+<script src="/include/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="/include/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="/include/css/style.css" />
+</head>
+<body>
+
+
+	<nav class="navbar navbar-fixed-top navbar-inverse top-header">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand margintopn10px" href="#"><img
+						src="/include/images/logo_in_nav_44x36.png" alt="LinkedIn"
+						height="36" width="44" /></a>
+				</div>
+				<div id="navbar" id="signinapp" ng-app="signinapp"
+					ng-controller="signinController" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-1"></div>
+						<div class="col-md-6">
+							<form id="form1" method="post" action="/profile/search">
+								<div class="navbar-form">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm"
+											style="width: 350px" placeholder="Search..." id="name"
+											name="name" value="">
+									</div>
+									<button type="submit" class="btn btn-primary">
+										<span class="glyphicon glyphicon-search"></span>
+									</button>
+
+
+
+									<!-- /input-group -->
+
+								</div>
+
+
+							</form>
+						</div>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">Link</a></li>
+						</ul>
+
+
+						<div class="col-md-3">
+							<div class="navbar-form">
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnInvitation" class="btn btn-primary"
+											type="button" onclick="sendtomessagebox()">
+											<span class="glyphicon glyphicon-envelope"></span>
+										</button>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button id="btnProfile" type="submit" class="btn btn-primary"
+											type="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											<span class="glyphicon glyphicon-user"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/user/edit">Edit Profile</a></li>
+											<li role="presentation" class="divider"></li>
+											<li role="presentation"><a role="menuitem" tabindex="-1"
+												href="/signout">Signout</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+
+	<nav
+		class="navbar-static-top backblack heightlow navlinks margintop40px">
+		<div class="container">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div id="navbar1" class="navbar-collapse collapse">
+					<div class="container">
+						<div class="col-md-4">
+							<div class="linkinbar">
+								<a href="/wall">Home</a> <a href="/user/edit">Profile</a> <a
+									href="/connections">Connections</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</nav>
+
+
+	<div ng-app="wallcontrol" id="wallcontrol"
+		ng-controller="wallcontroller">
+		<div>
+			<div ng-repeat="entity in feed track by $index">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-2"></div>
+						<div class="col-md-8 wallnotification margintop10px">
+							<div ng-if="entity.imagedetail == '' ">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-1" style="border-right: 1px solid #000">
+											<img height="75px" width="60px"
+												src="/include/images/no-profile-img.gif"> <a>
+												{{entity.firstname}} </a>
+										</div>
+										<div class="col-md-6">
+											<h2>is now connected to</h2>
+										</div>
+										<div ng-if="entity.toimagedetail == '' " class="col-md-1">
+
+											<img height="75px" width="60px"
+												src="/include/images/no-profile-img.gif"> <a>
+												{{entity.tofirstname}} </a>
+
+										</div>
+										<div ng-if="entity.toimagedetail != '' " class="col-md-1">
+
+											<img height="75px" width="60px"
+												src="/include/images/{{entity.toimagedetail}}"> <a>
+												{{entity.tofirstname}} </a>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div ng-if="entity.imagedetail != '' ">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-1" style="border-right: 1px solid #000">
+											<img height="75px" width="60px"
+												src="/include/images/{{entity.imagedetail}}"> <a>
+												{{entity.firstname}} </a>
+										</div>
+										<div class="col-md-6">
+											<h2>is now connected to</h2>
+										</div>
+										<div ng-if="entity.toimagedetail == '' " class="col-md-1">
+
+											<img height="75px" width="60px"
+												src="/include/images/no-profile-img.gif"> <a>
+												{{entity.tofirstname}} </a>
+
+										</div>
+										<div ng-if="entity.toimagedetail != '' " class="col-md-1">
+
+											<img height="75px" width="60px"
+												src="/include/images/{{entity.toimagedetail}}"> <a>
+												{{entity.tofirstname}} </a>
+
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script>
+		
+	</script>
+	<script>
+		var signinController = angular.module("signinapp", []);
+		signinController.controller("signinController", function($scope, $http,
+				$location) {
+
+			$scope.signIn = function() {
+				alert($scope.loginemail);
+				$http({
+					method : 'POST',
+					url : '/signin',
+					data : {
+						"username" : $scope.loginemail,
+						"password" : $scope.loginpassword
+					}
+
+				}).success(function(response) {
+					if (response.status == "success")
+						window.location = '/wall';
+					else
+						window.location = '/failLogin';
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+		var wallcontroller = angular.module("wallcontrol", []);
+		wallcontroller.controller("wallcontroller", function($scope, $http,
+				$location) {
+
+			$http({
+				method : 'GET',
+				url : '/wall/getwall',
+			}).success(function(response) {
+				console.log(response);
+
+				$scope.feed = JSON.parse(response.feed);
+
+			}).error(function(error) {
+				alert("error");
+			});
+
+		});
+		angular.bootstrap(document.getElementById("wallcontrol"),
+				[ 'wallcontrol' ]);
+	</script>
+</body>
+</html>
